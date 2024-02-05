@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newapp/CommonHelpers/getScreenSize.dart';
+import 'package:newapp/Screens/Accessories/enterQuantity.dart';
+import 'package:newapp/Screens/Accessories/selectModelAccess.dart';
 import 'package:newapp/Screens/SetUp/Anchor/paramPlane.dart';
 import 'package:newapp/Screens/SetUp/Anchor/pentaWhite.dart';
 import 'package:newapp/Screens/SetUp/selectModel.dart';
@@ -24,6 +26,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/pentaWhSetup': (context) => const PentaWhiteScreen(),
         '/paramSetup': (context) => const ParamPlaneScreen(),
+        '/selectModelsAccess': (context) => const SelectModelAccess(),
+        '/enterQuantity': (context) => const EnterQuantity(),
       },
       theme: ThemeData(
         appBarTheme: AppBarTheme(
