@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-var switchP=456465456465, socketP, pSetP;
-
-
 Map<String, dynamic> items = {
-  "Switch 6A" : switchP,
-  "Socket 6A" : socketP,
-  "Power Set" : pSetP,
+  "Switch 6A": null,
+  "Socket 6A": null,
+  "Power Set": null,
 };
 
+Map<String, dynamic> pentaWhItems = items;
 
+Map<String, dynamic> paramWhItems = items;

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:newapp/CommonHelpers/getScreenSize.dart';
+import 'package:newapp/Screens/SetUp/Anchor/paramPlane.dart';
+import 'package:newapp/Screens/SetUp/Anchor/pentaWhite.dart';
 import 'package:newapp/Screens/SetUp/selectModel.dart';
 import 'package:newapp/Screens/homeScreen.dart';
-import 'package:newapp/Screens/setupScreen.dart';
 import 'package:newapp/Utils/colors.dart';
 
 void main() {
@@ -19,31 +20,30 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      routes: {
+        '/home': (context) => const HomePage(),
+        '/pentaWhSetup': (context) => const PentaWhiteScreen(),
+        '/paramSetup': (context) => const ParamPlaneScreen(),
+      },
       theme: ThemeData(
-        appBarTheme:  AppBarTheme(
+        appBarTheme: AppBarTheme(
           backgroundColor: primaryDarkColor,
           foregroundColor: lightColoredText,
           centerTitle: true,
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(20),
-
-            )
-          ),
+              borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          )),
           titleTextStyle: TextStyle(
-            fontSize: screenHeight * 0.025,
-            color: lightColoredText,
-            fontFamily: 'JaneCaps'
-          ),
+              fontSize: screenHeight * 0.025,
+              color: lightColoredText,
+              fontFamily: 'JaneCaps'),
         ),
-
         colorScheme: ColorScheme.fromSeed(seedColor: primaryDarkColor),
         useMaterial3: true,
         fontFamily: 'JaneCaps',
       ),
-
-      home:  const SelectModelSetup(),
+      home: const SelectModelSetup(),
     );
   }
 }
-
