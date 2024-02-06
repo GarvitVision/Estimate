@@ -1,7 +1,8 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, file_names
 
 import 'package:flutter/material.dart';
 import 'package:newapp/CommonHelpers/getScreenSize.dart';
+import 'package:newapp/Screens/Accessories/description.dart';
 import 'package:newapp/Utils/accessories.dart';
 import 'package:newapp/Utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,22 +16,12 @@ class EnterQuantity extends StatefulWidget {
 
 class _EnterQuantityState extends State<EnterQuantity> {
   late Map<String, TextEditingController> controllers;
+  late TextEditingController lessPercent;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controllers = createTextEditingControllers();
-    getPrefValue();
-  }
-
-  Future getPrefValue() async {
-    var prefs = await SharedPreferences.getInstance();
-    controllers.forEach((itemName, controller) {
-      String? value = prefs.getString(itemName);
-      if (value != null) {
-        controller.text = value;
-      }
-    });
+    lessPercent = TextEditingController();
   }
 
   Map<String, TextEditingController> createTextEditingControllers() {
@@ -41,10 +32,9 @@ class _EnterQuantityState extends State<EnterQuantity> {
     return result;
   }
 
-  Future<String> getItemPrice(itemName) async {
+  Future getItemPrice(itemName) async {
     var pref = await SharedPreferences.getInstance();
     String value = pref.getString(itemName) ?? "";
-
     return value;
   }
 
@@ -70,7 +60,6 @@ class _EnterQuantityState extends State<EnterQuantity> {
               itemCount: enterQuantity.length,
               itemBuilder: (context, index) {
                 String itemName = enterQuantity.keys.elementAt(index);
-                Future<String> itemPrice = getItemPrice(itemName);
                 return Card(
                   margin: EdgeInsets.all(screenHeight * 0.015),
                   color: Colors.white,
@@ -87,7 +76,34 @@ class _EnterQuantityState extends State<EnterQuantity> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text("$itemPrice"),
+                        SizedBox(
+                          width: screenWidth * 0.1,
+                        ),
+                        FutureBuilder(
+                          future: getItemPrice(itemName),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              String itemPrice = snapshot.data!;
+
+                              return Text(
+                                "$itemPrice₹ MRP",
+                                style: TextStyle(
+                                  fontSize: screenHeight * 0.02,
+                                ),
+                              );
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
+                        ),
                         const Spacer(),
                         SizedBox(
                           width: screenWidth * 0.3,
@@ -113,8 +129,8 @@ class _EnterQuantityState extends State<EnterQuantity> {
           ),
           TextButton(
             onPressed: () async {
-              await calculatePreferences();
-              Navigator.pop(context);
+              await storeValuesInSharedPreferences();
+              onTapEnterLessPercentage();
             },
             child: const Text("Submit"),
           )
@@ -123,13 +139,85 @@ class _EnterQuantityState extends State<EnterQuantity> {
     );
   }
 
-  Future<void> calculatePreferences() async {
-    var total;
+  Future<void> storeValuesInSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     controllers.forEach(
       (itemName, controller) {
-        total = int.parse(controller.text) *
-            int.parse(prefs.getString(itemName) ?? "0");
+        prefs.setString("Quantity$itemName", controller.text);
+      },
+    );
+  }
+
+  onTapEnterLessPercentage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          surfaceTintColor: Colors.white,
+          title: const Text("Enter overall less %"),
+          actions: [
+            Padding(
+              padding: EdgeInsets.all(screenHeight * 0.01),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  StatefulBuilder(
+                    builder: (context, setState) {
+                      return TextFormField(
+                        controller: lessPercent,
+                        decoration: InputDecoration(
+                          errorBorder: InputBorder.none,
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: const Color.fromRGBO(245, 245, 245, 1),
+                          contentPadding: EdgeInsets.all(screenHeight * 0.01),
+                          hintText: "Enter % value",
+                          hintStyle: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Color.fromRGBO(128, 128, 128, 1),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromRGBO(221, 221, 221, 1),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Row(
+                    children: [
+                      Spacer(),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ItemsDescription(
+                                  lessPercentage: lessPercent.text),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Submit",
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        );
       },
     );
   }
