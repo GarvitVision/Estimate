@@ -8,7 +8,11 @@ import 'package:newapp/Utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EnterQuantity extends StatefulWidget {
-  const EnterQuantity({super.key});
+  final String modelCode;
+  const EnterQuantity({
+    Key? key,
+    required this.modelCode,
+  }) : super(key: key);
 
   @override
   State<EnterQuantity> createState() => _EnterQuantityState();
@@ -34,107 +38,112 @@ class _EnterQuantityState extends State<EnterQuantity> {
 
   Future getItemPrice(itemName) async {
     var pref = await SharedPreferences.getInstance();
-    String value = pref.getString(itemName) ?? "";
+    String value = pref.getString("${widget.modelCode}$itemName") ?? "";
     return value;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(247, 244, 248, 1),
-      appBar: AppBar(
-        title: const Row(
-          children: [
-            Text(
-              "Enter Quantity",
-            ),
-            Spacer(),
-          ],
-        ),
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: enterQuantity.length,
-              itemBuilder: (context, index) {
-                String itemName = enterQuantity.keys.elementAt(index);
-                return Card(
-                  margin: EdgeInsets.all(screenHeight * 0.015),
-                  color: Colors.white,
-                  surfaceTintColor: Colors.white,
-                  child: Padding(
-                    padding: EdgeInsets.all(screenHeight * 0.01),
-                    child: Row(
-                      children: [
-                        Text("$index. "),
-                        Text(
-                          itemName,
-                          style: TextStyle(
-                            fontSize: screenHeight * 0.02,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(
-                          width: screenWidth * 0.1,
-                        ),
-                        FutureBuilder(
-                          future: getItemPrice(itemName),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              String itemPrice = snapshot.data!;
-
-                              return Text(
-                                "$itemPrice₹ MRP",
-                                style: TextStyle(
-                                  fontSize: screenHeight * 0.02,
-                                ),
-                              );
-                            } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          },
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          width: screenWidth * 0.3,
-                          child: TextFormField(
-                            controller: controllers[itemName],
-                            keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                              hintText: "Enter Quantity",
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: lightColoredText,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
+    return ColoredBox(
+      color: primaryDarkColor,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: const Color.fromRGBO(247, 244, 248, 1),
+          appBar: AppBar(
+            title: const Row(
+              children: [
+                Text(
+                  "Enter Quantity",
+                ),
+                Spacer(),
+              ],
             ),
           ),
-          TextButton(
-            onPressed: () async {
-              await storeValuesInSharedPreferences();
-              onTapEnterLessPercentage();
-            },
-            child: const Text("Submit"),
-          )
-        ],
+          body: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: enterQuantity.length,
+                  itemBuilder: (context, index) {
+                    String itemName = enterQuantity.keys.elementAt(index);
+                    return Card(
+                      margin: EdgeInsets.all(screenHeight * 0.015),
+                      color: Colors.white,
+                      surfaceTintColor: Colors.white,
+                      child: Padding(
+                        padding: EdgeInsets.all(screenHeight * 0.01),
+                        child: Row(
+                          children: [
+                            Text("$index. "),
+                            Text(
+                              itemName,
+                              style: TextStyle(
+                                fontSize: screenHeight * 0.02,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: screenWidth * 0.1,
+                            ),
+                            FutureBuilder(
+                              future: getItemPrice(itemName),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  String itemPrice = snapshot.data!;
+
+                                  return Text(
+                                    "$itemPrice₹ MRP",
+                                    style: TextStyle(
+                                      fontSize: screenHeight * 0.02,
+                                    ),
+                                  );
+                                } else {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              },
+                            ),
+                            const Spacer(),
+                            SizedBox(
+                              width: screenWidth * 0.3,
+                              child: TextFormField(
+                                controller: controllers[itemName],
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  hintText: "Enter Quantity",
+                                  border: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: lightColoredText,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await storeValuesInSharedPreferences();
+                  onTapEnterLessPercentage();
+                },
+                child: const Text("Submit"),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
