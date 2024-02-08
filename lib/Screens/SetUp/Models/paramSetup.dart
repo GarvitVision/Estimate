@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:newapp/CommonHelpers/commonHelper.dart';
 import 'package:newapp/CommonHelpers/getScreenSize.dart';
+import 'package:newapp/Screens/SetUp/selectModel.dart';
 import 'package:newapp/Utils/accessories.dart';
 import 'package:newapp/Utils/colors.dart';
 import 'package:newapp/Utils/models.dart';
@@ -22,7 +23,6 @@ class _ParamPlaneScreenState extends State<ParamPlaneScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controllers = createTextEditingControllers();
     _formKeys = createGlobalKeys();
@@ -36,7 +36,6 @@ class _ParamPlaneScreenState extends State<ParamPlaneScreen> {
       if (value != null) {
         controller.text = value;
       }
-      print("SHARED PREFRENCES VALUE====== $value");
     });
   }
 
@@ -64,7 +63,7 @@ class _ParamPlaneScreenState extends State<ParamPlaneScreen> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text(
-              "Anchor Penta White",
+              "Param",
             ),
           ),
           body: Column(
@@ -83,7 +82,13 @@ class _ParamPlaneScreenState extends State<ParamPlaneScreen> {
                         padding: EdgeInsets.all(screenHeight * 0.01),
                         child: Row(
                           children: [
-                            Text("$index. "),
+                            Text(
+                              "${index + 1}. ",
+                              style: TextStyle(
+                                fontSize: screenHeight * 0.02,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             Text(
                               itemName,
                               style: TextStyle(
@@ -106,9 +111,12 @@ class _ParamPlaneScreenState extends State<ParamPlaneScreen> {
                                   },
                                   controller: controllers[itemName],
                                   keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     hintText: "Enter MRP",
-                                    border: UnderlineInputBorder(
+                                    hintStyle: TextStyle(
+                                      fontSize: screenHeight * 0.02,
+                                    ),
+                                    border: const UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: lightColoredText,
                                       ),
@@ -132,10 +140,20 @@ class _ParamPlaneScreenState extends State<ParamPlaneScreen> {
                     pref.setString(modelPrefs[CommonHelper.index], "Done");
                     await setupStatus();
                     await storeValuesInSharedPreferences();
-                    Navigator.pop(context);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SelectModelSetup(),
+                        ),
+                        (route) => false);
                   }
                 },
-                child: const Text("Submit"),
+                child: Text(
+                  "Submit",
+                  style: TextStyle(
+                    fontSize: screenHeight * 0.03,
+                  ),
+                ),
               )
             ],
           ),

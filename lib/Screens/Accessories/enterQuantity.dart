@@ -2,17 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:newapp/CommonHelpers/getScreenSize.dart';
-import 'package:newapp/Screens/Accessories/description.dart';
+import 'package:newapp/Screens/Accessories/selectModelAccess.dart';
 import 'package:newapp/Utils/accessories.dart';
 import 'package:newapp/Utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EnterQuantity extends StatefulWidget {
-  final String modelCode;
   const EnterQuantity({
-    Key? key,
-    required this.modelCode,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<EnterQuantity> createState() => _EnterQuantityState();
@@ -34,12 +32,6 @@ class _EnterQuantityState extends State<EnterQuantity> {
       result[itemName] = TextEditingController();
     });
     return result;
-  }
-
-  Future getItemPrice(itemName) async {
-    var pref = await SharedPreferences.getInstance();
-    String value = pref.getString("${widget.modelCode}$itemName") ?? "";
-    return value;
   }
 
   @override
@@ -75,7 +67,13 @@ class _EnterQuantityState extends State<EnterQuantity> {
                         padding: EdgeInsets.all(screenHeight * 0.01),
                         child: Row(
                           children: [
-                            Text("$index. "),
+                            Text(
+                              "${index + 1}. ",
+                              style: TextStyle(
+                                fontSize: screenHeight * 0.02,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             Text(
                               itemName,
                               style: TextStyle(
@@ -83,43 +81,18 @@ class _EnterQuantityState extends State<EnterQuantity> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(
-                              width: screenWidth * 0.1,
-                            ),
-                            FutureBuilder(
-                              future: getItemPrice(itemName),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                } else if (snapshot.connectionState ==
-                                    ConnectionState.done) {
-                                  String itemPrice = snapshot.data!;
-
-                                  return Text(
-                                    "$itemPrice₹ MRP",
-                                    style: TextStyle(
-                                      fontSize: screenHeight * 0.02,
-                                    ),
-                                  );
-                                } else {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                              },
-                            ),
                             const Spacer(),
                             SizedBox(
                               width: screenWidth * 0.3,
                               child: TextFormField(
                                 controller: controllers[itemName],
                                 keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   hintText: "Enter Quantity",
-                                  border: UnderlineInputBorder(
+                                  hintStyle: TextStyle(
+                                    fontSize: screenHeight * 0.02,
+                                  ),
+                                  border: const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                       color: lightColoredText,
                                     ),
@@ -137,9 +110,19 @@ class _EnterQuantityState extends State<EnterQuantity> {
               TextButton(
                 onPressed: () async {
                   await storeValuesInSharedPreferences();
-                  onTapEnterLessPercentage();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SelectModelAccess(),
+                    ),
+                  );
                 },
-                child: const Text("Submit"),
+                child: Text(
+                  "Submit",
+                  style: TextStyle(
+                    fontSize: screenHeight * 0.03,
+                  ),
+                ),
               )
             ],
           ),
@@ -154,79 +137,6 @@ class _EnterQuantityState extends State<EnterQuantity> {
     controllers.forEach(
       (itemName, controller) {
         prefs.setString("Quantity$itemName", controller.text);
-      },
-    );
-  }
-
-  onTapEnterLessPercentage() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          surfaceTintColor: Colors.white,
-          title: const Text("Enter overall less %"),
-          actions: [
-            Padding(
-              padding: EdgeInsets.all(screenHeight * 0.01),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  StatefulBuilder(
-                    builder: (context, setState) {
-                      return TextFormField(
-                        controller: lessPercent,
-                        decoration: InputDecoration(
-                          errorBorder: InputBorder.none,
-                          border: InputBorder.none,
-                          filled: true,
-                          fillColor: const Color.fromRGBO(245, 245, 245, 1),
-                          contentPadding: EdgeInsets.all(screenHeight * 0.01),
-                          hintText: "Enter % value",
-                          hintStyle: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: Color.fromRGBO(128, 128, 128, 1),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color.fromRGBO(221, 221, 221, 1),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  Row(
-                    children: [
-                      Spacer(),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ItemsDescription(
-                                  lessPercentage: lessPercent.text),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          "Submit",
-                          style: TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
-        );
       },
     );
   }

@@ -10,8 +10,9 @@ class SelectModelSetup extends StatelessWidget {
   const SelectModelSetup({super.key});
 
   Future getSetupStatus() async {
+    await setupStatus();
     var pref = await SharedPreferences.getInstance();
-    String value = pref.getString(SETUP_STATUS) ?? "";
+    String value = pref.getString(SETUP_STATUS) ?? "0.0";
     return value;
   }
 
@@ -83,7 +84,7 @@ class SelectModelSetup extends StatelessWidget {
                             ),
                           );
                         } else {
-                          var fraction = snapshot.data;
+                          var fraction = snapshot.data ?? 0.0;
                           return Stack(
                             children: [
                               Container(

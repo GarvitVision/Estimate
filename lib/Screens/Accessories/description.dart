@@ -8,8 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ItemsDescription extends StatefulWidget {
   final String lessPercentage;
+  final String modelCode;
   const ItemsDescription({
     Key? key,
+    required this.modelCode,
     required this.lessPercentage,
   }) : super(key: key);
 
@@ -39,7 +41,7 @@ class Items_DescriptionState extends State<ItemsDescription> {
     var prefs = await SharedPreferences.getInstance();
 
     controllers.forEach((itemName, controller) {
-      String? value = prefs.getString(itemName);
+      String? value = prefs.getString("${widget.modelCode}$itemName");
       if (value != null) {
         controller.text = (num.parse(value) -
                 (num.parse(value) * (num.parse(widget.lessPercentage) / 100)))
@@ -54,7 +56,7 @@ class Items_DescriptionState extends State<ItemsDescription> {
   List itemsMRP = [];
   Future getItemPrice(itemName) async {
     var pref = await SharedPreferences.getInstance();
-    String value = pref.getString(itemName) ?? "";
+    String value = pref.getString("${widget.modelCode}$itemName") ?? "";
     return value;
   }
 
