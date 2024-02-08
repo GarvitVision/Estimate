@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newapp/CommonHelpers/getScreenSize.dart';
+import 'package:newapp/Screens/Accessories/enterQuantity.dart';
+import 'package:newapp/Screens/SetUp/selectModel.dart';
 import 'package:newapp/Utils/colors.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,6 +13,83 @@ class HomePage extends StatelessWidget {
       color: primaryDarkColor,
       child: SafeArea(
         child: Scaffold(
+          drawer: Drawer(
+            backgroundColor: Colors.white,
+            width: screenWidth * 0.5,
+            child: SafeArea(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenHeight * 0.01,
+                  vertical: screenHeight * 0.1,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SelectModelSetup(),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: screenHeight * 0.01,
+                            horizontal: screenWidth * 0.02,
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.currency_rupee_rounded,
+                              ),
+                              const Spacer(),
+                              Text(
+                                "Change Models MRP",
+                                style: TextStyle(
+                                  fontSize: screenHeight * 0.02,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.02,
+                    ),
+                    Card(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: screenHeight * 0.01,
+                          horizontal: screenWidth * 0.02,
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.add,
+                            ),
+                            const Spacer(),
+                            SizedBox(
+                              width: screenWidth * 0.33,
+                              child: Text(
+                                "Add more Items to Accessories",
+                                style: TextStyle(
+                                  fontSize: screenHeight * 0.02,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           appBar: AppBar(
             backgroundColor: primaryDarkColor,
             centerTitle: true,
@@ -22,7 +101,12 @@ class HomePage extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/selectModelsAccess');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EnterQuantity(),
+                    ),
+                  );
                 },
                 child: Card(
                   margin: EdgeInsets.all(screenHeight * 0.015),

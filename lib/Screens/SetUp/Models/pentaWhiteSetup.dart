@@ -83,7 +83,13 @@ class _PentaWhiteScreenState extends State<PentaWhiteScreen> {
                         padding: EdgeInsets.all(screenHeight * 0.01),
                         child: Row(
                           children: [
-                            Text("$index. "),
+                            Text(
+                              "${index + 1}. ",
+                              style: TextStyle(
+                                fontSize: screenHeight * 0.02,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             Text(
                               itemName,
                               style: TextStyle(
@@ -106,9 +112,12 @@ class _PentaWhiteScreenState extends State<PentaWhiteScreen> {
                                   },
                                   controller: controllers[itemName],
                                   keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     hintText: "Enter MRP",
-                                    border: UnderlineInputBorder(
+                                    hintStyle: TextStyle(
+                                      fontSize: screenHeight * 0.02,
+                                    ),
+                                    border: const UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: lightColoredText,
                                       ),
@@ -135,7 +144,12 @@ class _PentaWhiteScreenState extends State<PentaWhiteScreen> {
                     Navigator.pop(context);
                   }
                 },
-                child: const Text("Submit"),
+                child: Text(
+                  "Submit",
+                  style: TextStyle(
+                    fontSize: screenHeight * 0.03,
+                  ),
+                ),
               )
             ],
           ),

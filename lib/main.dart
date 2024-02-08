@@ -18,6 +18,7 @@ import 'package:newapp/Screens/SetUp/Models/zivaBlackSetup.dart';
 import 'package:newapp/Screens/SetUp/Models/zivaWhiteSetup.dart';
 import 'package:newapp/Screens/SetUp/selectModel.dart';
 import 'package:newapp/Screens/homeScreen.dart';
+import 'package:newapp/Screens/splashScreen.dart';
 import 'package:newapp/Utils/colors.dart';
 
 void main() {
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'JaneCaps',
       ),
-      home: SelectModelSetup(),
+      home: const SplashScreen(),
     );
   }
 }
