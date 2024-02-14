@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newapp/CommonHelpers/getScreenSize.dart';
 import 'package:newapp/Screens/Accessories/enterQuantity.dart';
 import 'package:newapp/Screens/SetUp/selectModel.dart';
+import 'package:newapp/Screens/addItems.dart';
 import 'package:newapp/Utils/colors.dart';
 
 class HomePage extends StatelessWidget {
@@ -60,28 +61,42 @@ class HomePage extends StatelessWidget {
                     SizedBox(
                       height: screenHeight * 0.02,
                     ),
-                    Card(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: screenHeight * 0.01,
-                          horizontal: screenWidth * 0.02,
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.add,
-                            ),
-                            const Spacer(),
-                            SizedBox(
-                              width: screenWidth * 0.33,
-                              child: Text(
-                                "Add more Items to Accessories",
-                                style: TextStyle(
-                                  fontSize: screenHeight * 0.02,
-                                ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        showModalBottomSheet(
+                          showDragHandle: true,
+                          enableDrag: true,
+                          isDismissible: true,
+                          context: context,
+                          builder: (context) {
+                            return AddItems();
+                          },
+                        );
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: screenHeight * 0.01,
+                            horizontal: screenWidth * 0.02,
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.add,
                               ),
-                            )
-                          ],
+                              const Spacer(),
+                              SizedBox(
+                                width: screenWidth * 0.33,
+                                child: Text(
+                                  "Add more Items to Accessories",
+                                  style: TextStyle(
+                                    fontSize: screenHeight * 0.02,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -104,7 +119,7 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EnterQuantity(),
+                      builder: (context) => const EnterQuantity(),
                     ),
                   );
                 },

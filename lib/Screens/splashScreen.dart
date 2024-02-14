@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:newapp/Screens/SetUp/selectModel.dart';
+import 'package:newapp/Utils/accessories.dart';
 import 'package:newapp/Utils/setupStatus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,13 +17,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
     wheretoNavigate();
   }
 
   wheretoNavigate() async {
     var pref = await SharedPreferences.getInstance();
     String value = pref.getString(SETUP_STATUS) ?? "0.0";
-
+    await saveItems();
+    await fetchItems();
     if (num.parse(value).toStringAsFixed(2) == "1.00") {
       Future.delayed(
         const Duration(seconds: 2),
