@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 Map<String, dynamic> items = {
   "Switch 6A": null,
@@ -6,32 +8,76 @@ Map<String, dynamic> items = {
   "Power Set": null,
 };
 
-Map<String, dynamic> pentaWhItems = items;
+Future saveItems() async {
+  var pref = await SharedPreferences.getInstance();
+  var itemsJson = jsonEncode(items);
+  await pref.setString('ITEMS', itemsJson);
+}
 
-Map<String, dynamic> paramItems = items;
+Future fetchItems() async {
+  var pref = await SharedPreferences.getInstance();
 
-Map<String, dynamic> paramWoodenItems = items;
+  var encodeditems = pref.getString("ITEMS");
 
-Map<String, dynamic> zivaWhiteItems = items;
+  if (encodeditems != null) {
+    pentaWhItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> zivaBlackItems = items;
+    paramItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> pentaWhiteGinaItems = items;
+    paramWoodenItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> pentaBlackItems = items;
+    zivaWhiteItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> pentaWhiteFlatItems = items;
+    zivaBlackItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> pentaBlackFlatItems = items;
+    pentaWhiteGinaItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> greatWhiteItems = items;
+    pentaBlackItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> l$TItems = items;
+    pentaWhiteFlatItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> havellsFabioItems = items;
+    pentaBlackFlatItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> romaClassicItems = items;
+    greatWhiteItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> romaUrbanItems = items;
+    l$TItems = jsonDecode(encodeditems);
 
-Map<String, dynamic> enterQuantity = items;
+    havellsFabioItems = jsonDecode(encodeditems);
+
+    romaClassicItems = jsonDecode(encodeditems);
+
+    romaUrbanItems = jsonDecode(encodeditems);
+
+    enterQuantity = jsonDecode(encodeditems);
+  }
+}
+
+var pentaWhItems;
+
+var paramItems;
+
+var paramWoodenItems;
+
+var zivaWhiteItems;
+
+var zivaBlackItems;
+
+var pentaWhiteGinaItems;
+
+var pentaBlackItems;
+
+var pentaWhiteFlatItems;
+
+var pentaBlackFlatItems;
+
+var greatWhiteItems;
+
+var l$TItems;
+
+var havellsFabioItems;
+
+var romaClassicItems;
+
+var romaUrbanItems;
+
+var enterQuantity;
