@@ -24,7 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
   wheretoNavigate() async {
     var pref = await SharedPreferences.getInstance();
     String value = pref.getString(SETUP_STATUS) ?? "0.0";
-    await saveItems();
+    if (pref.getString("ITEMS") != null) {
+      await getItems();
+    }
     await fetchItems();
     if (num.parse(value).toStringAsFixed(2) == "1.00") {
       Future.delayed(

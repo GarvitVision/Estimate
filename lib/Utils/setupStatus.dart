@@ -11,6 +11,5 @@ Future setupStatus() async {
       count = count + totalCount;
     }
   }
-  print("COUNTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==== $count");
   pref.setString(SETUP_STATUS, "$count");
 }
