@@ -1,16 +1,20 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-Map<String, dynamic> items = {
-  "Switch 6A": null,
-  "Socket 6A": null,
-  "Power Set": null,
-};
+Map items = {};
+
+Future getItems() async {
+  var pref = await SharedPreferences.getInstance();
+  items = jsonDecode(pref.getString("ITEMS") ?? "");
+}
 
 Future saveItems() async {
   var pref = await SharedPreferences.getInstance();
   var itemsJson = jsonEncode(items);
+
   await pref.setString('ITEMS', itemsJson);
 }
 
