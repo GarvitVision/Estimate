@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:newapp/CommonHelpers/getScreenSize.dart';
-import 'package:newapp/Screens/Accessories/enterQuantity.dart';
 import 'package:newapp/Screens/Accessories/selectModelAccess.dart';
 import 'package:newapp/Screens/SetUp/Models/greatWhiteSetup.dart';
 import 'package:newapp/Screens/SetUp/Models/hevellsFabioSetup.dart';
@@ -16,7 +15,6 @@ import 'package:newapp/Screens/SetUp/Models/romaClassicSetup.dart';
 import 'package:newapp/Screens/SetUp/Models/romaUrbanSetup.dart';
 import 'package:newapp/Screens/SetUp/Models/zivaBlackSetup.dart';
 import 'package:newapp/Screens/SetUp/Models/zivaWhiteSetup.dart';
-import 'package:newapp/Screens/SetUp/selectModel.dart';
 import 'package:newapp/Screens/homeScreen.dart';
 import 'package:newapp/Screens/splashScreen.dart';
 import 'package:newapp/Utils/colors.dart';

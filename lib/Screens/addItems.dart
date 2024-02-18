@@ -4,7 +4,7 @@ import 'package:newapp/Utils/accessories.dart';
 import 'package:newapp/Utils/colors.dart';
 
 class AddItems extends StatefulWidget {
-  AddItems({super.key});
+  const AddItems({super.key});
 
   @override
   State<AddItems> createState() => _AddItemsState();

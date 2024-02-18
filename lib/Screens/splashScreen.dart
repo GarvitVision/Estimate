@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:newapp/CommonHelpers/getScreenSize.dart';
 import 'package:newapp/Screens/SetUp/selectModel.dart';
 import 'package:newapp/Utils/accessories.dart';
 import 'package:newapp/Utils/setupStatus.dart';
@@ -58,17 +59,21 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         width: double.maxFinite,
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(color: Color(0xffef11a6)),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
         child: Center(
           child: Container(
-            width: 318,
-            height: 113,
+            width: screenHeight * 0.4,
+            height: screenWidth,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: Colors.white),
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+            ),
             child: Center(
               child: Image.asset(
-                "images/Logo splash.png",
-                fit: BoxFit.fill,
+                "assets/images/BELogo.png",
+                fit: BoxFit.cover,
                 filterQuality: FilterQuality.high,
               ),
             ),
